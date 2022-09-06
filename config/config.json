@@ -1,0 +1,60 @@
+{
+    "name": "CQT_experiments",
+    "n_gpu": 3,
+    "seed": 10,
+
+    "kadid_dataloader": {
+        "type": "Kadid10kDataset",
+        "args":{
+            "width": 256,
+            "height": 256,
+            "img_path": "/ssd2/ohhs/database/QA/KADID-10k/images",
+            "flist": "/ssd2/ohhs/database/QA/KADID-10k/dmos.csv",
+            "crop_size": 256,
+            "batch_size": 8,
+            "shuffle": true,
+            "validation_split": 0.0,
+            "num_workers": 2
+        }
+    },
+
+    "optimizer": {
+        "type": "Adam",
+        "args":{
+            "lr": 1e-5,
+            "weight_decay": 0,
+            "betas": [0.9, 0.999],
+            "amsgrad": false
+        }
+    },
+
+    "model_main": {
+        "type": "ConvolvedQualityTransformer",
+        "args": {
+            "ngf": 64,
+            "h": 32,
+            "w": 32,
+            "dim": 512,
+            "heads": 4,
+            "dim_head": 128,
+            "dropout": 0.1,
+            "dim_mlp": 2048
+        }
+    },
+
+    "metrics": [
+        "plcc", "srcc", "krcc", "rmse"
+    ],
+
+    "trainer": {
+        "epochs": 30,
+        "save_dir": "saved/",
+        "save_period": 1,
+        "verbosity": 2,
+
+        "monitor": "off",
+        "early_stop": 5,
+
+        "tensorboard": true
+    }
+}
